@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strings"
 
 	"borgor/print"
 	_ "github.com/mattn/go-sqlite3"
