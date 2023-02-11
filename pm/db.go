@@ -58,8 +58,8 @@ func CreateDB() {
 	print.PrintC(print.Yellow, "No local RPS package database could be found. Generating a new one...")
 
 	// create the file
-	dbDir := strings.Replace(dbPath, "/packages.db", "", 1)
 	os.Mkdir(dbDir, 0755)
+	os.Mkdir(dbDir+"/packages", 0755)
 	os.Create(dbPath)
 
 	// open the file as a db
