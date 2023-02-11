@@ -66,14 +66,14 @@ func DownloadPackage(pack string) {
 	DownloadFile(dbDir+"/.tmp/pack.zip", rpsAPI+"download/"+pack)
 
 	// create a directory for the package's contents
-	err = os.Mkdir("./.tmp/pack", os.ModePerm)
+	err = os.Mkdir(dbDir+"/.tmp/pack", os.ModePerm)
 	if err != nil {
 		CleanUpTemp()
 		die("Unable to create temporary directory for extraction!")
 	}
 
 	// unzip the package file
-	uz := unzip.New("./.tmp/pack.zip", "./.tmp/pack")
+	uz := unzip.New(dbDir+"/.tmp/pack.zip", "./.tmp/pack")
 	err = uz.Extract()
 
 	if err != nil {
@@ -83,7 +83,7 @@ func DownloadPackage(pack string) {
 
 	// check if the package contains the .ll
 	// if it doenst -> this package is broken
-	if _, err := os.Stat("./.tmp/pack/" + pack + ".ll"); err != nil {
+	if _, err := os.Stat(dbDir + "/.tmp/pack/" + pack + ".ll"); err != nil {
 		CleanUpTemp()
 		die("The package's module file (.ll) could not be located!*! This indicates a broken package.")
 	}
@@ -91,7 +91,7 @@ func DownloadPackage(pack string) {
 	print.PrintC(print.ThinYellow, "Copying module file...")
 
 	// if the module exists, copy it to the ./packages directory
-	err = CopyFile("./.tmp/pack/"+pack+".ll", "./packages/"+pack+".ll")
+	err = CopyFile(dbDir+"/.tmp/pack/"+pack+".ll", "./packages/"+pack+".ll")
 	if err != nil {
 		CleanUpTemp()
 		die("The package could not be copied to ./packages!")
@@ -102,10 +102,10 @@ func DownloadPackage(pack string) {
 	pdata.Dependencies = ""
 
 	// remove the .ll from the temp dir
-	os.Remove("./.tmp/pack/" + pack + ".ll")
+	os.Remove(dbDir + "/.tmp/pack/" + pack + ".ll")
 
 	// check if this package has any dependencies
-	empty, err := DirIsEmpty("./.tmp/pack/")
+	empty, err := DirIsEmpty(dbDir + "/.tmp/pack/")
 
 	// if so, copy them
 	if !empty && err == nil {
@@ -126,7 +126,7 @@ func DownloadPackage(pack string) {
 		}
 
 		// copy all deps
-		err = CopyDirectoryToDirectory("./.tmp/pack/", "./packages/"+pack+"/")
+		err = CopyDirectoryToDirectory(dbDir+"/.tmp/pack/", "./packages/"+pack+"/")
 		if err != nil {
 			CleanUpTemp()
 			die("Could not copy package dependencies!")
