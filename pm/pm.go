@@ -73,7 +73,7 @@ func DownloadPackage(pack string) {
 	}
 
 	// unzip the package file
-	uz := unzip.New(dbDir+"/.tmp/pack.zip", "./.tmp/pack")
+	uz := unzip.New(dbDir+"/.tmp/pack.zip", dbDir+"/.tmp/pack")
 	err = uz.Extract()
 
 	if err != nil {
@@ -91,14 +91,14 @@ func DownloadPackage(pack string) {
 	print.PrintC(print.ThinYellow, "Copying module file...")
 
 	// if the module exists, copy it to the ./packages directory
-	err = CopyFile(dbDir+"/.tmp/pack/"+pack+".ll", "./packages/"+pack+".ll")
+	err = CopyFile(dbDir+"/.tmp/pack/"+pack+".ll", dbDir+"/packages/"+pack+".ll")
 	if err != nil {
 		CleanUpTemp()
-		die("The package could not be copied to ./packages!")
+		die("The package could not be copied to packages folder!")
 	}
 
 	// remember the module file of this package
-	pdata.File = "./packages/" + pack + ".ll"
+	pdata.File = dbDir + "/packages/" + pack + ".ll"
 	pdata.Dependencies = ""
 
 	// remove the .ll from the temp dir
@@ -112,28 +112,28 @@ func DownloadPackage(pack string) {
 		print.PrintC(print.ThinYellow, "Copying dependencies...")
 
 		// if the dependency dir already exists, overwrite it
-		err = os.RemoveAll("./packages/" + pack)
+		err = os.RemoveAll(dbDir + "/packages/" + pack)
 		if err != nil {
 			CleanUpTemp()
-			die("Could not create package dependency folder '%s'!", "./packages/"+pack)
+			die("Could not create package dependency folder '%s'!", dbDir+"/packages/"+pack)
 		}
 
 		// create a dependency dir
-		err = os.Mkdir("./packages/"+pack, os.ModePerm)
+		err = os.Mkdir(dbDir+"/packages/"+pack, os.ModePerm)
 		if err != nil {
 			CleanUpTemp()
-			die("Could not create package dependency folder '%s'!", "./packages/"+pack)
+			die("Could not create package dependency folder '%s'!", dbDir+"/packages/"+pack)
 		}
 
 		// copy all deps
-		err = CopyDirectoryToDirectory(dbDir+"/.tmp/pack/", "./packages/"+pack+"/")
+		err = CopyDirectoryToDirectory(dbDir+"/.tmp/pack/", dbDir+"/packages/"+pack+"/")
 		if err != nil {
 			CleanUpTemp()
 			die("Could not copy package dependencies!")
 		}
 
 		// store the dep location in the package data object
-		pdata.Dependencies = "./packages/" + pack
+		pdata.Dependencies = dbDir + "/packages/" + pack
 
 		print.PrintC(print.ThinGreen, "Dependencies have been copied!")
 	} else {

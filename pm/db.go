@@ -1,14 +1,12 @@
 package pm
 
 import (
+	"borgor/print"
 	"database/sql"
 	"fmt"
+	_ "github.com/mattn/go-sqlite3"
 	"os"
 	"runtime"
-	"strings"
-
-	"borgor/print"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 var dbPath, dbDir = func() (string, string) {
