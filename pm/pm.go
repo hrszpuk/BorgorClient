@@ -9,9 +9,7 @@ import (
 	"github.com/artdarek/go-unzip"
 )
 
-// Package PM
-// ==========
-// This package holds all package managing related functionality
+const rpsAPI = "https://rps.rect-lang.org/api"
 
 func Get(op []string) {
 	// Initialize the local package database
@@ -36,7 +34,7 @@ func Get(op []string) {
 func DownloadPackage(pack string) {
 	// look up the package
 	print.PrintC(print.ThinYellow, "Looking up package on rps...")
-	resp, err := http.Get("http://rps.rect.ml/api/lookup/" + pack)
+	resp, err := http.Get(rpsAPI + "lookup/" + pack)
 	if err != nil {
 		dieErr("Could not reach rps api endpoint!", err)
 	}
@@ -65,7 +63,7 @@ func DownloadPackage(pack string) {
 	SetUpTemp()
 
 	// download this package from rps
-	DownloadFile("./.tmp/pack.zip", "http://rps.rect.ml/api/download/"+pack)
+	DownloadFile(dbDir+"/.tmp/pack.zip", rpsAPI+"download/"+pack)
 
 	// create a directory for the package's contents
 	err = os.Mkdir("./.tmp/pack", os.ModePerm)
@@ -181,7 +179,7 @@ func Update(op []string) {
 
 	// look up the package
 	print.PrintC(print.ThinYellow, "Looking up package on rps...")
-	resp, err := http.Get("http://rps.rect.ml/api/lookup/" + pack)
+	resp, err := http.Get(rpsAPI + "lookup/" + pack)
 	if err != nil {
 		dieErr("Could not reach rps api endpoint!", err)
 	}
@@ -271,7 +269,7 @@ func UpdateAll() {
 }
 
 func SilentLookup(pack string) *Package {
-	resp, err := http.Get("http://rps.rect.ml/api/lookup/" + pack)
+	resp, err := http.Get(rpsAPI + "lookup/" + pack)
 	if err != nil {
 		dieErr("Could not reach rps api endpoint!", err)
 	}
