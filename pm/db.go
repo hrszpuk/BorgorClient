@@ -9,7 +9,7 @@ import (
 	"runtime"
 )
 
-var dbPath, dbDir = func() (string, string) {
+var dbDir, dbPath = func() (string, string) {
 	home, _ := os.UserHomeDir()
 	if runtime.GOOS == "windows" {
 		dir := "%APPDATA%/borgor"
