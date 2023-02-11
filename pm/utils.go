@@ -8,8 +8,10 @@ import (
 	"os"
 	"strings"
 
-	"bytespace.network/rpsclient/print"
+	"borgor/print"
 )
+
+const rpsAPI = "rps.rect-lang.org/api"
 
 // die will print out a given error message and then die();
 func die(text string, params ...interface{}) {

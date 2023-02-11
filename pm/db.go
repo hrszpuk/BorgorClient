@@ -4,15 +4,27 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"runtime"
+	"strings"
 
-	"bytespace.network/rpsclient/print"
+	"borgor/print"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 // DB.go
 // =====
 // This file contains all functionality concerning RPS's local sqlite database
-const dbPath = "./packages/pkginfo.db"
+var dbPath = func() string {
+	home, _ := os.UserHomeDir()
+	if runtime.GOOS == "windows" {
+		return "%APPDATA%/borgor/packages.db"
+	} else if runtime.GOOS == "darwin" {
+		return home + "/Library/Application Support/borgor/packages.db"
+	} else {
+		return home + "/.borgor/packages.db"
+	}
+}()
+
 const defTbl = `
 	CREATE TABLE Packages (
 		ID           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +43,7 @@ func InitializeDB() {
 		CreateDB()
 	}
 
-	_db, err := sql.Open("sqlite3", "./packages/pkginfo.db")
+	_db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		print.PrintCF(print.Red, "Could not open local database file '%s'!", dbPath)
 		fmt.Println(err.Error())
@@ -46,6 +58,8 @@ func CreateDB() {
 	print.PrintC(print.Yellow, "No local RPS package database could be found. Generating a new one...")
 
 	// create the file
+	dbDir := strings.Replace(dbPath, "/packages.db", "", 1)
+	os.Mkdir(dbDir, 0755)
 	os.Create(dbPath)
 
 	// open the file as a db
