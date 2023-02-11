@@ -6,7 +6,7 @@ import (
 	"os"
 	"runtime"
 
-	"bytespace.network/rpsclient/print"
+	"borgor/print"
 	_ "github.com/mattn/go-sqlite3"
 )
 

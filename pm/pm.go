@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"bytespace.network/rpsclient/print"
+	"borgor/print"
 	"github.com/artdarek/go-unzip"
 )
 

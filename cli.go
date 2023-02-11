@@ -1,12 +1,11 @@
 package main
 
 import (
+	"borgor/pm"
+	"borgor/print"
 	"flag"
 	"fmt"
 	"strings"
-
-	"bytespace.network/rpsclient/pm"
-	"bytespace.network/rpsclient/print"
 )
 
 /* cli.go handles flags and command line arguments for the project
