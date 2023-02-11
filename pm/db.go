@@ -16,7 +16,7 @@ import (
 var dbPath = func() string {
 	home, _ := os.UserHomeDir()
 	if runtime.GOOS == "windows" {
-		return "%APPDATA%\\borgor\\pacakges.db"
+		return "%APPDATA%/borgor/packages.db"
 	} else if runtime.GOOS == "darwin" {
 		return home + "/Library/Application Support/borgor/packages.db"
 	} else {
@@ -42,7 +42,7 @@ func InitializeDB() {
 		CreateDB()
 	}
 
-	_db, err := sql.Open("sqlite3", "./packages/pkginfo.db")
+	_db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		print.PrintCF(print.Red, "Could not open local database file '%s'!", dbPath)
 		fmt.Println(err.Error())
