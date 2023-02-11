@@ -11,8 +11,6 @@ import (
 	"borgor/print"
 )
 
-const rpsAPI = "rps.rect-lang.org/api"
-
 // die will print out a given error message and then die();
 func die(text string, params ...interface{}) {
 	msg := fmt.Sprintf(text, params...)
