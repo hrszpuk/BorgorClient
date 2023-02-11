@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"runtime"
 
 	"bytespace.network/rpsclient/print"
 	_ "github.com/mattn/go-sqlite3"
@@ -12,7 +13,17 @@ import (
 // DB.go
 // =====
 // This file contains all functionality concerning RPS's local sqlite database
-const dbPath = "./packages/pkginfo.db"
+var dbPath = func() string {
+	home, _ := os.UserHomeDir()
+	if runtime.GOOS == "windows" {
+		return "%APPDATA%\\borgor\\pacakges.db"
+	} else if runtime.GOOS == "darwin" {
+		return home + "/Library/Application Support/borgor/packages.db"
+	} else {
+		return home + "/.borgor/packages.db"
+	}
+}()
+
 const defTbl = `
 	CREATE TABLE Packages (
 		ID           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
