@@ -11,17 +11,17 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// DB.go
-// =====
-// This file contains all functionality concerning RPS's local sqlite database
-var dbPath = func() string {
+var dbPath, dbDir = func() (string, string) {
 	home, _ := os.UserHomeDir()
 	if runtime.GOOS == "windows" {
-		return "%APPDATA%/borgor/packages.db"
+		dir := "%APPDATA%/borgor"
+		return dir, dir + "/packages.db"
 	} else if runtime.GOOS == "darwin" {
-		return home + "/Library/Application Support/borgor/packages.db"
+		dir := home + "/Library/Application Support/borgor"
+		return dir, dir + "/packages.db"
 	} else {
-		return home + "/.borgor/packages.db"
+		dir := home + "/.borgor/"
+		return dir, dir + "/packages.db"
 	}
 }()
 
