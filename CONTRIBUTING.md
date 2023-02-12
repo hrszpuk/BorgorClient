@@ -12,12 +12,12 @@ Below lists a few *guidelines* for contributing to the repository, it is importa
 
 ## How do I contribute?
 There are many way you can contribute to this project, many of which do not require coding experience.
-Submitting [bug reports](https://github.com/hrszpuk/borgor/issues/new?assignees=&labels=bug%2C+help+wanted&template=bug_report.md&title=Submit%20a%20new%20bug%20report%20here!), creating [idea discussions](https://github.com/hrszpuk/borgor/discussions/categories/ideas), creating [Q&A discussions](https://github.com/hrszpuk/borgor/discussions/categories/q-a), answering [Q&A discussions](https://github.com/hrszpuk/borgor/discussions/categories/q-a), 
+Submitting [bug reports](https://github.com/hrszpuk/BorgorClient/issues/new?assignees=&labels=bug%2C+help+wanted&template=bug_report.md&title=Submit%20a%20new%20bug%20report%20here!), creating [idea discussions](https://github.com/hrszpuk/BorgorClient/discussions/categories/ideas), creating [Q&A discussions](https://github.com/hrszpuk/BorgorClient/discussions/categories/q-a), answering [Q&A discussions](https://github.com/hrszpuk/BorgorClient/discussions/categories/q-a), 
 correcting documentation, and ensuring others are following the contribution guidelines are all 
 considered contributions and don't require any knowledge about coding.
 
 ### Where to start
-If you wish to start contributing to `borgor` the best place to begin is the [issues](https://github.com/hrszpuk/borgor/issues) tab!
+If you wish to start contributing to `borgor` the best place to begin is the [issues](https://github.com/hrszpuk/BorgorClient/issues) tab!
 Issues are our way to keeping track of what needs to be done.
 Our issues are crafted specially with new contributors in mind.
 Near the title of each issue will be a series of labels, these give you much needed information about what the issue is about.
