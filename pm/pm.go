@@ -9,7 +9,8 @@ import (
 	"github.com/artdarek/go-unzip"
 )
 
-const rpsAPI = "https://rps.rect-lang.org/api"
+const rpsAPI = "https://rps.rect-lang.org/api/"
+const rpsfAPI = "https://rpsf.rect-lang.org/"
 
 func Get(op []string) {
 	// Initialize the local package database
@@ -63,10 +64,10 @@ func DownloadPackage(pack string) {
 	SetUpTemp()
 
 	// download this package from rps
-	DownloadFile(dbDir+"/.tmp/pack.zip", rpsAPI+"download/"+pack)
+	DownloadFile(dbDir+"/.tmp/pack.zip", rpsfAPI+pack+".zip.rps")
 
 	// create a directory for the package's contents
-	err = os.Mkdir(dbDir+"/.tmp/pack", os.ModePerm)
+	err = os.Mkdir(dbDir+"/.tmp/pack", 0755)
 	if err != nil {
 		CleanUpTemp()
 		die("Unable to create temporary directory for extraction!")
@@ -91,7 +92,8 @@ func DownloadPackage(pack string) {
 	print.PrintC(print.ThinYellow, "Copying module file...")
 
 	// if the module exists, copy it to the ./packages directory
-	err = CopyFile(dbDir+"/.tmp/pack/"+pack+".ll", dbDir+"/packages/"+pack+".ll")
+	os.Create(dbDir + "packages/" + pack + ".ll")
+	err = CopyFile(dbDir+"/.tmp/pack/"+pack+".ll", dbDir+"packages/"+pack+".ll")
 	if err != nil {
 		CleanUpTemp()
 		die("The package could not be copied to packages folder!")

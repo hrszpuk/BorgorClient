@@ -57,11 +57,11 @@ func DownloadFile(filepath string, url string) error {
 }
 
 func SetUpTemp() {
-	os.Mkdir("./.tmp", os.ModePerm)
+	os.Mkdir(dbDir+"/.tmp", os.ModePerm)
 }
 
 func CleanUpTemp() {
-	os.RemoveAll("./.tmp")
+	os.RemoveAll(dbDir + "/.tmp")
 }
 
 func CopyFile(sourceFile string, destinationFile string) error {
