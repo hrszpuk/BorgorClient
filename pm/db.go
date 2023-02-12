@@ -1,27 +1,25 @@
 package pm
 
 import (
+	"borgor/print"
 	"database/sql"
 	"fmt"
+	_ "github.com/mattn/go-sqlite3"
 	"os"
 	"runtime"
-	"strings"
-
-	"borgor/print"
-	_ "github.com/mattn/go-sqlite3"
 )
 
-// DB.go
-// =====
-// This file contains all functionality concerning RPS's local sqlite database
-var dbPath = func() string {
+var dbDir, dbPath = func() (string, string) {
 	home, _ := os.UserHomeDir()
 	if runtime.GOOS == "windows" {
-		return "%APPDATA%/borgor/packages.db"
+		dir := "%APPDATA%/borgor"
+		return dir, dir + "/packages.db"
 	} else if runtime.GOOS == "darwin" {
-		return home + "/Library/Application Support/borgor/packages.db"
+		dir := home + "/Library/Application Support/borgor"
+		return dir, dir + "/packages.db"
 	} else {
-		return home + "/.borgor/packages.db"
+		dir := home + "/.borgor/"
+		return dir, dir + "/packages.db"
 	}
 }()
 
@@ -58,8 +56,8 @@ func CreateDB() {
 	print.PrintC(print.Yellow, "No local RPS package database could be found. Generating a new one...")
 
 	// create the file
-	dbDir := strings.Replace(dbPath, "/packages.db", "", 1)
 	os.Mkdir(dbDir, 0755)
+	os.Mkdir(dbDir+"/packages", 0755)
 	os.Create(dbPath)
 
 	// open the file as a db

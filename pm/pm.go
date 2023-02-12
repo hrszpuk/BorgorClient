@@ -9,9 +9,8 @@ import (
 	"github.com/artdarek/go-unzip"
 )
 
-// Package PM
-// ==========
-// This package holds all package managing related functionality
+const rpsAPI = "https://rps.rect-lang.org/api/"
+const rpsfAPI = "https://rpsf.rect-lang.org/"
 
 func Get(op []string) {
 	// Initialize the local package database
@@ -36,7 +35,7 @@ func Get(op []string) {
 func DownloadPackage(pack string) {
 	// look up the package
 	print.PrintC(print.ThinYellow, "Looking up package on rps...")
-	resp, err := http.Get("http://rps.rect.ml/api/lookup/" + pack)
+	resp, err := http.Get(rpsAPI + "lookup/" + pack)
 	if err != nil {
 		dieErr("Could not reach rps api endpoint!", err)
 	}
@@ -65,17 +64,17 @@ func DownloadPackage(pack string) {
 	SetUpTemp()
 
 	// download this package from rps
-	DownloadFile("./.tmp/pack.zip", "http://rps.rect.ml/api/download/"+pack)
+	DownloadFile(dbDir+"/.tmp/pack.zip", rpsfAPI+pack+".zip.rps")
 
 	// create a directory for the package's contents
-	err = os.Mkdir("./.tmp/pack", os.ModePerm)
+	err = os.Mkdir(dbDir+"/.tmp/pack", 0755)
 	if err != nil {
 		CleanUpTemp()
 		die("Unable to create temporary directory for extraction!")
 	}
 
 	// unzip the package file
-	uz := unzip.New("./.tmp/pack.zip", "./.tmp/pack")
+	uz := unzip.New(dbDir+"/.tmp/pack.zip", dbDir+"/.tmp/pack")
 	err = uz.Extract()
 
 	if err != nil {
@@ -85,7 +84,7 @@ func DownloadPackage(pack string) {
 
 	// check if the package contains the .ll
 	// if it doenst -> this package is broken
-	if _, err := os.Stat("./.tmp/pack/" + pack + ".ll"); err != nil {
+	if _, err := os.Stat(dbDir + "/.tmp/pack/" + pack + ".ll"); err != nil {
 		CleanUpTemp()
 		die("The package's module file (.ll) could not be located!*! This indicates a broken package.")
 	}
@@ -93,49 +92,50 @@ func DownloadPackage(pack string) {
 	print.PrintC(print.ThinYellow, "Copying module file...")
 
 	// if the module exists, copy it to the ./packages directory
-	err = CopyFile("./.tmp/pack/"+pack+".ll", "./packages/"+pack+".ll")
+	os.Create(dbDir + "packages/" + pack + ".ll")
+	err = CopyFile(dbDir+"/.tmp/pack/"+pack+".ll", dbDir+"packages/"+pack+".ll")
 	if err != nil {
 		CleanUpTemp()
-		die("The package could not be copied to ./packages!")
+		die("The package could not be copied to packages folder!")
 	}
 
 	// remember the module file of this package
-	pdata.File = "./packages/" + pack + ".ll"
+	pdata.File = dbDir + "/packages/" + pack + ".ll"
 	pdata.Dependencies = ""
 
 	// remove the .ll from the temp dir
-	os.Remove("./.tmp/pack/" + pack + ".ll")
+	os.Remove(dbDir + "/.tmp/pack/" + pack + ".ll")
 
 	// check if this package has any dependencies
-	empty, err := DirIsEmpty("./.tmp/pack/")
+	empty, err := DirIsEmpty(dbDir + "/.tmp/pack/")
 
 	// if so, copy them
 	if !empty && err == nil {
 		print.PrintC(print.ThinYellow, "Copying dependencies...")
 
 		// if the dependency dir already exists, overwrite it
-		err = os.RemoveAll("./packages/" + pack)
+		err = os.RemoveAll(dbDir + "/packages/" + pack)
 		if err != nil {
 			CleanUpTemp()
-			die("Could not create package dependency folder '%s'!", "./packages/"+pack)
+			die("Could not create package dependency folder '%s'!", dbDir+"/packages/"+pack)
 		}
 
 		// create a dependency dir
-		err = os.Mkdir("./packages/"+pack, os.ModePerm)
+		err = os.Mkdir(dbDir+"/packages/"+pack, os.ModePerm)
 		if err != nil {
 			CleanUpTemp()
-			die("Could not create package dependency folder '%s'!", "./packages/"+pack)
+			die("Could not create package dependency folder '%s'!", dbDir+"/packages/"+pack)
 		}
 
 		// copy all deps
-		err = CopyDirectoryToDirectory("./.tmp/pack/", "./packages/"+pack+"/")
+		err = CopyDirectoryToDirectory(dbDir+"/.tmp/pack/", dbDir+"/packages/"+pack+"/")
 		if err != nil {
 			CleanUpTemp()
 			die("Could not copy package dependencies!")
 		}
 
 		// store the dep location in the package data object
-		pdata.Dependencies = "./packages/" + pack
+		pdata.Dependencies = dbDir + "/packages/" + pack
 
 		print.PrintC(print.ThinGreen, "Dependencies have been copied!")
 	} else {
@@ -181,7 +181,7 @@ func Update(op []string) {
 
 	// look up the package
 	print.PrintC(print.ThinYellow, "Looking up package on rps...")
-	resp, err := http.Get("http://rps.rect.ml/api/lookup/" + pack)
+	resp, err := http.Get(rpsAPI + "lookup/" + pack)
 	if err != nil {
 		dieErr("Could not reach rps api endpoint!", err)
 	}
@@ -271,7 +271,7 @@ func UpdateAll() {
 }
 
 func SilentLookup(pack string) *Package {
-	resp, err := http.Get("http://rps.rect.ml/api/lookup/" + pack)
+	resp, err := http.Get(rpsAPI + "lookup/" + pack)
 	if err != nil {
 		dieErr("Could not reach rps api endpoint!", err)
 	}

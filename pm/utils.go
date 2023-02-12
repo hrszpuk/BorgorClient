@@ -11,8 +11,6 @@ import (
 	"borgor/print"
 )
 
-const rpsAPI = "rps.rect-lang.org/api"
-
 // die will print out a given error message and then die();
 func die(text string, params ...interface{}) {
 	msg := fmt.Sprintf(text, params...)
@@ -59,11 +57,11 @@ func DownloadFile(filepath string, url string) error {
 }
 
 func SetUpTemp() {
-	os.Mkdir("./.tmp", os.ModePerm)
+	os.Mkdir(dbDir+"/.tmp", os.ModePerm)
 }
 
 func CleanUpTemp() {
-	os.RemoveAll("./.tmp")
+	os.RemoveAll(dbDir + "/.tmp")
 }
 
 func CopyFile(sourceFile string, destinationFile string) error {
