@@ -1,0 +1,19 @@
+Repository:
+  - any: [".github/*"]
+  - any: [".github/**/*"]
+
+Go:
+  - any: ["*.go", "*/*.go", "*/**/*.go"]
+
+Asset:
+  - any: ["*.png"]
+  - any: ["*.jpg"]
+  - any: ["*.pdf"]
+
+Documentation:
+  - any: ["README.md"]
+  - any: ["*/README.md"]
+
+Dependencies:
+  - any: ["go.mod"]
+  - any: ["go.sum"]
