@@ -1,4 +1,4 @@
-# BorgorClient - RPS Client
+# :hamburger: Borgor - RPS Client (fork)
 The ultimate command line tool for managing ReCT Package System packages for the ReCT programming language.
 
 ## How to build/install 
