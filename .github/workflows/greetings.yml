@@ -1,0 +1,16 @@
+name: Greetings
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: "## :partying_face: Congratulations on your first issue! :partying_face:\nThank you for expressing your interest in [borgor](https://github.com/hrszpuk/borgor)!\nWe'd love to have you as a contributor, but please read the [contribution guildelines](https://github.com/hrszpuk/borgor/blob/main/CONTRIBUTING.md) before you start making any contributions!\n\nThank you!"
+        pr-message: "## :partying_face: Congratulations on your first pull request! :partying_face:\nWe are grateful to all of our contributors! For the best chance of a merge, make sure your pull request conforms to the pull request guidelines set out in the [contribution guildelines](https://github.com/hrszpuk/borgor/blob/main/CONTRIBUTING.md)!\n"
