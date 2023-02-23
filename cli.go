@@ -58,6 +58,8 @@ func ProcessFlags() {
 		pm.Update(options[1:])
 	} else if op == "remove" {
 		pm.Remove(options[1:])
+	} else if op == "list" {
+		pm.List()
 	} else {
 		print.PrintCF(print.Red, "Unknown operation '%s'", op)
 	}

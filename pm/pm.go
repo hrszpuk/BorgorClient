@@ -1,9 +1,11 @@
 package pm
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 
 	"borgor/print"
 	"github.com/artdarek/go-unzip"
@@ -339,4 +341,25 @@ func Remove(op []string) {
 
 	print.PrintC(print.Green, "Package has been removed!")
 	db.Close()
+}
+
+func List() {
+	InitializeDB()
+
+	packagesCount := 0
+	res, err := db.Query("SELECT * FROM Packages")
+	ErrorDB(err)
+
+	heading := "Packages list"
+	sep := strings.Repeat("-", len(heading))
+	fmt.Printf("%s\n%s\n", heading, sep)
+
+	for res.Next() {
+		pkg := GetPackage(res)
+		fmt.Printf("%s [%s]\n", pkg.Name, pkg.Version)
+		packagesCount++
+	}
+
+	fmt.Println(sep)
+	fmt.Printf("Total package count = %d\n", packagesCount)
 }
