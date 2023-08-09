@@ -1,6 +1,10 @@
 # :hamburger: Borgor - RPS Client (fork)
 The ultimate command line tool for managing ReCT Package System packages for the ReCT programming language.
 
+## :warning: This project has been archived :warning:
+Borgor not longer works as the development of the rect programming language has ended and the maintanence of rps.rect-lang.org (or rps-dev.rect-lang.org) has come to an end.
+For this reason, I have decided the project will be publicly archived to indicate the fact that borgor not longer works and will not longer be maintained.
+
 ## How to build/install 
 In order to build and install `borgor` you must have the Go programming language installed.
 A guide to the installation of Go for your platform is available [here](https://go.dev/doc/install).
